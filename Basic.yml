@@ -1,0 +1,6 @@
+# This file contains high level architecture of k8s
+
+apiVersion:
+kind:
+metadata:
+spec:
