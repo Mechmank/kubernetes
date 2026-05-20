@@ -1,0 +1,27 @@
+# Example for Node port service
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: myapp-service
+spec:
+  type: NodePort
+  ports:
+    - port: 80
+      targetPort: 80
+      nodePort: 30008
+  selector:
+    app: myapp
+
+
+# kubectl create -f service-definition.yml : will create the repicaset with specified spec
+# kubectl get service : Will show the services in a cluster
+# kubectl describe service myapp-service: Will describe about the service
+# kubectl describe service service-definition.yml: Will describe about the service
+# kubectl delete service service-definition.yml : Delete the service with yml file
+# kubectl delete service myapp-rc : Delete the service with name
+# kubectl get service -o wide : Will show the image and selector labels
+# kubectl scale --replicas=6 -f service-definition.yml : Can scale the pods in running time
+# kubectl scale --replicas=8 service myapp-service : Can scale the pods in running time
+# kubectl edit service myapp-service : Can change the running replica set configuration in live
+# kubectl apply -f service-definition.yml : If any changes made in .yml file in live need to manually apply the changes
