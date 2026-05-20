@@ -1,0 +1,23 @@
+# Simple pod creation yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+  labels:
+    app: nginx
+    tier: frontend
+spec:
+  containers:
+    - name: nginx
+      image: nginx
+      
+# kubectl create -f pod-definition.yml : To create a pod with the mentioned specification
+# kubectl apply -f pod-definition.yml : Apply the changes in .yml files
+# kubectl edit pod pod-definition.yml : To edit the running pod conf with pod-definition.yml file
+# kubectl describe pod pod-definition.yml : Will show the details of the pods created with pod-definition.yml
+# kubectl describe pod nginx : To see the pod details using pod name
+# kubectl get pod : Will show the all pods
+# kubectl get pod -o wide: Will show the all pods along with ip, node and previous cmd output
+
+# kubectl run nginx: Will create a pod automatically
+# kubectl run nginx --image nginx: Will create a pod automatically with specified image versio

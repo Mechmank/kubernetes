@@ -1,0 +1,32 @@
+# Will contains the replica set configuration
+apiVersion: apps/v1
+kind: Replicaset
+metadata:
+  name: myapp-replicaset
+  labels:
+    app: myapp
+    type: frontend
+spec:
+  - template:
+      metadata:
+        name: myapp-pod
+        labels:
+          app: myapp
+          type: frontend
+      spec:
+        containers:
+          - name: nginx-container
+            image: nginx
+replicas: 3
+selector:
+  matchlabels:
+    type: frontend
+    
+    
+
+# kubectl create -f replicaset-definition.yml : will create the repicaset with specified spec
+# kubectl get replicaset : Will show the replicasets in a cluster
+# kubectl describe Replicaset myapp-replicaset: Will describe about the Replicaset
+# kubectl describe replicaset replicaset-definition.yml: Will describe about the replicaset
+# kubectl delete replicaset replicaset-definition.yml : Delete the replicaset with yml file
+# kubectl delete replicaset myapp-rc : Delete the replicaset with name

@@ -1,0 +1,27 @@
+# Will contains the replication controller configuration
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: myapp-rc
+  labels:
+    app: myapp
+    type: frontend
+spec:
+  - template:
+      metadata:
+        name: myapp-pod
+        labels:
+          app: myapp
+          type: frontend
+      spec:
+        containers:
+          - name: nginx-container
+            image: nginx
+replicas: 3
+
+# kubectl create -f replicationcontroller-definition.yml : will create the repication controller with specified spec
+# kubectl get replicationcontroller : Will show the replicationcontroller in a cluster
+# kubectl describe replicationcontroller myapp-rc: Will describe about the replicationcontroller
+# kubectl describe replicationcontroller replicationcontroller-definition.yml: Will describe about the replicationcontroller
+# kubectl delete replicationcontroller replicationcontroller-definition.yml : Delete the ReplicationController with yml file
+# kubectl delete replicationcontroller myapp-rc : Delete the ReplicationController with name
