@@ -1,0 +1,36 @@
+ # This file contains deployment kind examples
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myapp-deployment
+  labels:
+    app: myapp
+    type: frontend
+spec:
+  template:
+      metadata:
+        name: myapp-pod
+        labels:
+          app: myapp
+          type: frontend
+      spec:
+        containers:
+          - name: nginx-container
+            image: nginx
+  replicas: 3
+  selector:
+    matchLabels:
+      type: frontend
+
+      
+# kubectl create -f deployment-definition.yml : will create the repicaset with specified spec
+# kubectl get deployment : Will show the deployments in a cluster
+# kubectl describe deployment myapp-deployment: Will describe about the deployment
+# kubectl describe deployment deployment-definition.yml: Will describe about the deployment
+# kubectl delete deployment deployment-definition.yml : Delete the deployment with yml file
+# kubectl delete deployment myapp-rc : Delete the deployment with name
+# kubectl get deployment -o wide : Will show the image and selector labels
+# kubectl scale --replicas=6 -f deployment-definition.yml : Can scale the pods in running time
+# kubectl scale --replicas=8 deployment myapp-deployment : Can scale the pods in running time
+# kubectl edit deployment myapp-deployment : Can change the running replica set configuration in live
+# kubectl apply -f deployment-definition.yml : If any changes made in .yml file in live need to manually apply the changes
