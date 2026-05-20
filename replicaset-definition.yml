@@ -19,8 +19,8 @@ spec:
             image: nginx
   replicas: 3
   selector:
-  matchlabels:
-    type: frontend
+    matchLabels:
+      type: frontend
     
     
 
