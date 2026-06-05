@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: pod
+metadata:
+  name: worker
+  labels:
+    app: worker
+spec:
+  containers:
+    - name: worker
+      image: dockersamples/examplevotingapp_worker
+# For worker node do not expose any port so no need to specify ports.

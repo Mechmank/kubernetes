@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis
+  labels:
+    app: redis
+spec:
+  type: ClusterIP         # Since the redis communicate within the Cluster so we can use ClusterIP. ClusterIP is the default type of the service.
+  ports:
+    - name: "redis-service"
+      port: 6379               # Port that can reach by the cluster
+      targetPort: 6379         # Port exposing the service
+  selector:
+    app: redis                 # tag from the redis_pod.yml
