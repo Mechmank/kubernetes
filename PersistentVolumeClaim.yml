@@ -1,0 +1,34 @@
+---
+# PersistentVolume (PV) can't attach with the pod directly. It requires a request from application, ie, PersistentVolumeClaim(PVC).
+# Once PVC attached to one PV it will last till the PV got deleted.
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-example
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi
+# PVC can attach(Bind) the PV which having more than the requestd space. But not with the less one.
+
+---
+# example to attach with the pod
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pod-app
+spec:
+  container:
+    - name: nginx
+      image: nginx
+      volumeMounts:
+        - name: app-storage          # Provide name for the volume mount
+          mountPath: "/usr/share/nginx/html" # The file inside the pod ie, going to attach with PV
+  volumes:
+    - name: app-storage   # Name of the volume mount             
+      PersistentVolumeClaim:
+        claimName: pvc-example # Name of the PVC to attach with
+        
+# PVC will search for the available PV with provided requirments and bind with it.

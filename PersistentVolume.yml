@@ -1,0 +1,17 @@
+---
+apiVersion: v1
+kind: PersiistentVolume
+metadata:
+  name: pv-example
+spec:
+  capacity:
+    storage: 5Gi    # Size of the storage
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: /data/app  # File path on local host/node of the pod. Can use cloud storages and attach here.
+    
+# ReadWriteOnce - One node can read / write once
+# ReadOnlyMany - Read only many nodes read only at a time
+# ReadWriteMany - Many nodes can read / write at a time
+
