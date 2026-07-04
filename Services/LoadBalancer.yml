@@ -1,0 +1,16 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: webapp
+  ports:
+    - port: 80
+      targetPort: 8080
+      nodePort: 30007   # Use NodePort internally 
+      
+# Create external LoadBalancer. Cloud only AWS, Azure, GCP
+# Production apps exposed to internet
