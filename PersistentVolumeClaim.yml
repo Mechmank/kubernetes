@@ -16,7 +16,7 @@ spec:
 ---
 # example to attach with the pod
 apiVersion: v1
-kind: PersistentVolumeClaim
+kind: Pod
 metadata:
   name: pod-app
 spec:
