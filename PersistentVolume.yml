@@ -8,6 +8,8 @@ spec:
     storage: 5Gi    # Size of the storage
   accessModes:
     - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Delete # Delete the PV if the attached PVC deleted - Data lost
+  persistentVolumeReclaimPolicy: Retain # PV wont get deleted even if PVC deleted, the data inside the PV will be saved
   hostPath:
     path: /data/app  # File path on local host/node of the pod. Can use cloud storages and attach here.
     
