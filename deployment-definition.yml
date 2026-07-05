@@ -14,6 +14,7 @@ spec:
           app: myapp
           type: frontend
       spec:
+        ServiceAccountName: service-account #Give service acccount name if using RBAC. RBAC use service accounts for the pod to role bind
         containers:
           - name: nginx-container
             image: nginx
