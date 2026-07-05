@@ -6,6 +6,7 @@ kind: PersistentVolumeClaim
 metadata:
   name: pvc-example
 spec:
+  storageClassName: my-storageclass # If need to attach with storage class
   accessModes:
     - ReadWriteOnce
   resources:
