@@ -89,3 +89,8 @@ Expected:
 ```text
 yes
 ```
+-----
+ServiceAccount → Identity for Pods
+Role           → Permissions
+RoleBinding    → Connects identity + permissions
+Pod            → Uses ServiceAccount
