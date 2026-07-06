@@ -1,0 +1,58 @@
+
+
+# Kubernetes Taint and Toleration Example
+
+Goal:
+Allow only Pods with a matching toleration to run on a tainted node.
+
+### Step 1: Add taint to node
+
+```bash
+kubectl taint nodes worker-node-1 app=backend:NoSchedule  # Add taint for Node
+
+kubectl taint nodes worker-node-1 app=backend:NoSchedule- # Remove taint from node
+```
+
+### Step 2: Pod with matching toleration
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: backend-pod
+
+spec:
+  tolerations:
+  - key: "app"
+    operator: "Equal"
+    value: "backend"
+    effect: "NoSchedule"
+
+  containers:
+  - name: nginx
+    image: nginx
+```
+
+### Explanation
+
+```text
+Node:
+app=backend:NoSchedule
+
+Pod:
+key=app
+value=backend
+effect=NoSchedule
+```
+
+Result:
+
+```text
+Matching toleration found
+        ↓
+Pod can run on worker-node-1
+```
+
+NoSchedule       → Don't place new pods
+PreferNoSchedule → Try to avoid placement
+NoExecute        → Don't schedule and evict existing pods
