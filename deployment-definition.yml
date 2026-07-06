@@ -14,7 +14,8 @@ spec:
           app: myapp
           type: frontend
       spec:
-        ServiceAccountName: service-account #Give service acccount name if using RBAC. RBAC use service accounts for the pod to role bind
+        revisionHistoryLimit: 10            # To limit the release version
+        ServiceAccountName: service-account # Give service acccount name if using RBAC. RBAC use service accounts for the pod to role bind
         containers:
           - name: nginx-container
             image: nginx
@@ -35,3 +36,9 @@ spec:
 # kubectl scale --replicas=8 deployment myapp-deployment : Can scale the pods in running time
 # kubectl edit deployment myapp-deployment : Can change the running replica set configuration in live
 # kubectl apply -f deployment-definition.yml : If any changes made in .yml file in live need to manually apply the changes
+# kubectl rollout history deployment/<deployment-name> :  Check deployment rollout history
+# kubectl rollout undo deployment/<deployment-name> : Roll back to previous revision
+# kubectl rollout undo deployment/<deployment-name> --to-revision=<revision-number> : Roll back to a specific revision number
+# kubectl rollout status deployment/<deployment-name> : Watch rollout status after rollback
+
+
