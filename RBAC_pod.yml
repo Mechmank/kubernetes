@@ -1,0 +1,91 @@
+# Pod → ServiceAccount → Role/ClusterRole → RoleBinding/ClusterRoleBinding
+# By default the pods will have the service account "defauly". With the default service account pods can't communicate each other.
+# Or single pod can't watch the another pod. Every pod is isolated one
+# Kubernetes RBAC using ServiceAccount
+
+Goal:
+Allow a Pod to read Pods only in the `dev` namespace.
+
+```yaml
+# service-account.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: pod-reader-sa
+  namespace: dev
+```
+
+```yaml
+# role.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: pod-reader-role
+  namespace: dev
+
+rules:
+- apiGroups: [""]
+  resources: ["pods"]
+  verbs:
+    - get
+    - list
+    - watch
+```
+
+```yaml
+# rolebinding.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: pod-reader-binding
+  namespace: dev
+
+subjects:
+- kind: ServiceAccount
+  name: pod-reader-sa
+  namespace: dev
+
+roleRef:
+  kind: Role
+  name: pod-reader-role
+  apiGroup: rbac.authorization.k8s.io
+```
+
+```yaml
+# pod.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: test-pod
+  namespace: dev
+
+spec:
+  serviceAccountName: pod-reader-sa
+
+  containers:
+  - name: nginx
+    image: nginx
+```
+
+Apply:
+
+```bash
+kubectl apply -f service-account.yaml
+kubectl apply -f role.yaml
+kubectl apply -f rolebinding.yaml
+kubectl apply -f pod.yaml
+```
+
+Verify permissions:
+
+```bash
+kubectl auth can-i list pods \
+--as=system:serviceaccount:dev:pod-reader-sa \
+-n dev
+```
+
+Expected:
+
+```text
+yes
+```
