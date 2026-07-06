@@ -1,0 +1,62 @@
+# Kubernetes RBAC Example (User Access)
+
+Goal:
+Allow `developer-user` to only view Pods in the `dev` namespace.
+
+```yaml
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  namespace: dev         # namespace is important for Role
+  name: pod-reader
+
+rules:
+- apiGroups: [""]
+  resources: ["pods"]
+  verbs:
+    - get
+    - list
+    - watch
+```
+
+```yaml
+# rolebinding.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: read-pods-binding
+  namespace: dev
+
+subjects:
+- kind: User
+  name: developer-user
+  apiGroup: rbac.authorization.k8s.io
+
+roleRef:
+  kind: Role
+  name: pod-reader
+  apiGroup: rbac.authorization.k8s.io
+```
+
+Apply:
+
+```bash
+kubectl apply -f role.yaml
+kubectl apply -f rolebinding.yaml
+```
+
+Verify:
+
+```bash
+kubectl auth can-i get pods --as=developer-user -n dev
+
+kubectl auth can-i delete pods --as=developer-user -n dev
+```
+
+Expected output:
+
+```text
+yes
+no
+```
