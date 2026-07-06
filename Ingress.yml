@@ -1,0 +1,72 @@
+ # This example routes traffic based on URL paths.
+
+Requests:
+
+* `myapp.com/api` → `api-service`
+* `myapp.com/web` → `web-service`
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: my-app-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+
+spec:
+  ingressClassName: nginx
+
+  rules:
+    - host: myapp.com        # Host based routing
+      http:                  # Path based routing
+        paths:             
+         - path: /api
+           pathType: Prefix
+           backend:
+             service:
+               name: api-service
+               port:
+                 number: 80
+
+         - path: /web
+           pathType: Prefix
+           backend:
+              service:
+                name: web-service
+                port:
+                  number: 80
+
+
+Explanation:
+
+* `ingressClassName: nginx`
+
+  * Tells Kubernetes to use the NGINX ingress controller.
+
+* `host: myapp.com`
+
+  * Matches requests coming to this domain.
+
+* `path: /api`
+
+  * Routes `/api/*` traffic.
+
+* `pathType: Prefix`
+
+  * Matches anything starting with `/api`.
+
+* `backend`
+
+  * Defines the target service.
+
+Example flow:
+
+```text
+Request: myapp.com/api/users
+
+
+Ingress
+   ↓
+api-service
+   ↓
+API Pods
+```
