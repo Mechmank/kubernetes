@@ -1,0 +1,71 @@
+# Kubernetes Resource Requests and Limits Example
+
+Goal:
+Create a Pod with CPU and memory requests and limits.
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: resource-demo
+
+spec:
+  containers:
+  - name: nginx
+    image: nginx
+
+    resources:
+      requests:
+        cpu: "200m"
+        memory: "128Mi"
+
+      limits:
+        cpu: "500m"
+        memory: "512Mi"
+```
+
+Explanation:
+
+requests:
+
+* cpu: 200m → Reserve 0.2 CPU
+* memory: 128Mi → Reserve 128 MB memory
+
+limits:
+
+* cpu: 500m → Maximum 0.5 CPU usage
+* memory: 512Mi → Maximum 512 MB memory
+
+Behavior:
+
+```text
+CPU:
+Uses 300m → Allowed
+Uses 600m → Throttled
+
+Memory:
+Uses 300Mi → Allowed
+Uses 700Mi → Pod may be terminated (OOMKilled)
+```
+
+Apply:
+
+```bash
+kubectl apply -f resource-demo.yaml
+```
+
+Verify:
+
+```bash
+kubectl describe pod resource-demo
+```
+
+#Units
+1000m = 1 CPU
+
+Ki = Kibibytes
+Mi = Mebibytes
+Gi = Gibibytes
+
+requests → Used by scheduler to decide where Pod can run
+limits    → Used by kubelet to enforce max usage
